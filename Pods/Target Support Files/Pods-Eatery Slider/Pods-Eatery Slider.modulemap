@@ -1,0 +1,6 @@
+framework module Pods_Eatery_Slider {
+  umbrella header "Pods-Eatery Slider-umbrella.h"
+
+  export *
+  module * { export * }
+}
