@@ -105,20 +105,18 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Dwh-md-w6g">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Speichern" id="Vf9-FD-Ajg">
-                                <connections>
-                                    <segue destination="NOj-Of-Hmk" kind="unwind" unwindAction="unwindToUserList:" id="8fq-hg-tvT"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="add" id="Bzz-ny-QSW">
-                                <inset key="imageInsets" minX="20" minY="0.0" maxX="15" maxY="0.0"/>
-                                <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <segue destination="ufn-Hl-8N3" kind="presentation" identifier="AddItem" id="3jB-xB-Qcw"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" image="previous" id="Vf9-FD-Ajg">
+                            <connections>
+                                <segue destination="NOj-Of-Hmk" kind="unwind" unwindAction="unwindToUserList:" id="8fq-hg-tvT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Bzz-ny-QSW">
+                            <inset key="imageInsets" minX="20" minY="0.0" maxX="15" maxY="0.0"/>
+                            <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="ufn-Hl-8N3" kind="presentation" identifier="AddItem" id="3jB-xB-Qcw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="saveButton" destination="Vf9-FD-Ajg" id="AjO-fE-0ZP"/>
@@ -390,7 +388,7 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpy-yq-6Rw">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Cpy-yq-6Rw">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1855,13 +1853,9 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Neu Gericht" id="l68-fg-pFa">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="hdz-yt-5ri">
+                        <barButtonItem key="leftBarButtonItem" image="previous" id="cJh-Mr-mce">
                             <connections>
-                                <action selector="cancel:" destination="BYZ-38-t0r" id="Y3Z-xi-4N9"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Speichern" id="cJh-Mr-mce">
-                            <connections>
+                                <action selector="cancel:" destination="BYZ-38-t0r" id="Rnr-Q9-Gzj"/>
                                 <segue destination="34i-M6-9St" kind="unwind" unwindAction="unwindToMealList:" id="p1A-ao-YxJ"/>
                             </connections>
                         </barButtonItem>
@@ -2117,6 +2111,7 @@
         <image name="no-vitamin" width="35" height="35"/>
         <image name="no_gluten" width="32" height="32"/>
         <image name="no_sugar" width="32" height="32"/>
+        <image name="previous" width="22" height="22"/>
         <image name="rabbit" width="32" height="32"/>
         <image name="sad" width="32" height="32"/>
         <image name="sugar" width="32" height="32"/>
