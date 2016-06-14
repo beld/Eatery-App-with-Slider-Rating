@@ -31,13 +31,14 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBOutlet weak var sugarLabel: UILabel!
     @IBOutlet weak var vitaminLabel: UILabel!
     @IBOutlet weak var fibreLabel: UILabel!
+    @IBOutlet weak var tasteButton: UIButton!
     
     var meal: Meal?
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var tagListView: AMTagListView!
     @IBAction func addTag(sender: AnyObject) {
-        let tag = ["delicious", "healthy", "easy", "unhealthy"]
+        let tag = ["gesund"]
         
         RRTagController.displayTagController(self, tagsString: tag, blockFinish: { (selectedTags, unSelectedTags) -> () in
             // the user finished the selection and returns the separated list Selected and not selected.
@@ -58,14 +59,14 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         healthLabel.text = String(format: "%.0f/100", healthSlider.value)
     }
     @IBAction func fatValueChanged(sender: AnyObject) {
-        fatLabel.text = String(format: "%.0f g", fatSlider.value)
+        fatLabel.text = String(format: "%.0f/100", fatSlider.value)
     }
     @IBAction func carbValueChanged(sender: AnyObject) {
-        carbLabel.text = String(format: "%.0f g", carbSlider.value)
+        carbLabel.text = String(format: "%.0f/100", carbSlider.value)
     }
     
     @IBAction func caloryValuedChanged(sender: AnyObject) {
-        caloryLabel.text = String(format: "%.0f kalorien", calorySlider.value)
+        caloryLabel.text = String(format: "%.0f Kalorien", calorySlider.value)
     }
     @IBAction func energyDensityValueChanged(sender: AnyObject) {
         energyDensityLabel.text = String(format: "%.0f kcal/gram", energyDensitySlider.value)
@@ -74,11 +75,11 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         difficultyLabel.text = String(format: "%.0f/100", difficultySlider.value)
     }
     @IBAction func timeValueChanged(sender: AnyObject) {
-        timeLabel.text = String(format: "%.0f mins", timeSlider.value)
+        timeLabel.text = String(format: "%.0f Min.", timeSlider.value)
     }
     
     @IBAction func sugarValueChanged(sender: AnyObject) {
-        sugarLabel.text = String(format: "%.0f g", sugarSlider.value)
+        sugarLabel.text = String(format: "%.0f/100", sugarSlider.value)
     }
     
     @IBAction func vitaminValueChanged(sender: AnyObject) {
@@ -116,7 +117,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     
     @IBAction func energyDensityButton(sender: AnyObject) {
         let alert = SCLAlertView()
-        alert.showInfo("Energiedichte", subTitle: "Bitte bewerten Sie die Energiedichte (Kilokalorien pro Gramm) dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        alert.showInfo("Energiedichte", subTitle: "Bitte bewerten Sie die Energiedichte (Kilokalorien pro Gramm) dieses Gericht Ihrer Meinung nach")
     }
     
     @IBAction func difficultyButton(sender: AnyObject) {
@@ -126,7 +127,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     
     @IBAction func timeButton(sender: AnyObject) {
         let alert = SCLAlertView()
-        alert.showInfo("Zeit", subTitle: "Bitte bewerten Sie die Zeit, die Sie brauchen diese Mahlzeit zu bereiten, von 0 bis 100")
+        alert.showInfo("Zeit", subTitle: "Bitte bewerten Sie die Zeit, die Sie brauchen diese Mahlzeit zu bereiten, von 0 bis 180 Mins")
     }
     
     @IBAction func sugarButton(sender: AnyObject) {
@@ -151,7 +152,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         
         navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: UIFont(name: "BradleyHandITCTT-Bold", size: 15)!,
+            ([NSFontAttributeName: UIFont(name: "ChalkboardSE-Bold", size: 15)!,
                 NSForegroundColorAttributeName: UIColor.whiteColor()])
         
         // Handle the text field’s user input through delegate callbacks.
@@ -163,26 +164,47 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
             nameTextField.text = existingMeal.name
             photoImageView.image = existingMeal.photo
             tasteSlider.value = existingMeal.tasteRating
+            tasteSlider.thumbTintColor = tasteButton.tintColor
             tasteLabel.text = String(format: "%.0f/100", existingMeal.tasteRating)
+            
             healthSlider.value = existingMeal.healthRating
             healthLabel.text = String(format: "%.0f/100", existingMeal.healthRating)
+            healthSlider.thumbTintColor = tasteButton.tintColor
+            
             fatSlider.value = existingMeal.fatRating
-            fatLabel.text = String(format: "%.10 g", fatSlider.value)
+            fatSlider.thumbTintColor = tasteButton.tintColor
+            fatLabel.text = String(format: "%.0f/100", fatSlider.value)
+            
             carbSlider.value = existingMeal.carbRating
-            carbLabel.text = String(format: "%.0f g", carbSlider.value)
+            carbSlider.thumbTintColor = tasteButton.tintColor
+            carbLabel.text = String(format: "%.0f/100", carbSlider.value)
+            
             calorySlider.value = existingMeal.caloryRating
-            caloryLabel.text = String(format: "%.1f calories", calorySlider.value)
+            calorySlider.thumbTintColor = tasteButton.tintColor
+            caloryLabel.text = String(format: "%.0f Kalorien", calorySlider.value)
+            
             energyDensitySlider.value = existingMeal.energyDensityRating
+            energyDensitySlider.thumbTintColor = tasteButton.tintColor
             energyDensityLabel.text = String(format: "%.0f kcal/gram", energyDensitySlider.value)
+            
             difficultySlider.value = existingMeal.difficultyRating
+            difficultySlider.thumbTintColor = tasteButton.tintColor
             difficultyLabel.text = String(format: "%.0f/100", existingMeal.difficultyRating)
+            
             timeSlider.value = existingMeal.timeRating
-            timeLabel.text = String(format: "%.0f/100", timeSlider.value)
+            timeSlider.thumbTintColor = tasteButton.tintColor
+            timeLabel.text = String(format: "%.0f Min.", timeSlider.value)
+            
             sugarSlider.value = existingMeal.sugarRating
-            sugarLabel.text = String(format: "%.0f g", sugarSlider.value)
+            sugarSlider.thumbTintColor = tasteButton.tintColor
+            sugarLabel.text = String(format: "%.0f/100", sugarSlider.value)
+            
             vitaminSlider.value = existingMeal.vitaminRating
+            vitaminSlider.thumbTintColor = tasteButton.tintColor
             vitaminLabel.text = String(format: "%.0f/100", vitaminSlider.value)
+            
             fibreSlider.value = existingMeal.fibreRating
+            fibreSlider.thumbTintColor = tasteButton.tintColor
             fibreLabel.text =  String(format: "%.0f/100", fibreSlider.value)
             descriptionTextView.text = existingMeal.cookingDescription
         }
