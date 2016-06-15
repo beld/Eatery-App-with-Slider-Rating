@@ -81,7 +81,6 @@ class MealTableViewController: UITableViewController {
         }
     }
     
-    
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? MealViewController, meal = sourceViewController.meal {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -89,7 +88,6 @@ class MealTableViewController: UITableViewController {
                 meal.elapsedRatingTime = elapsedTime
                 // updating existing meal
                 user!.meals[selectedIndexPath.row] = meal
-//                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
                 tableView.reloadData()
                 // reset navigation bar to transparent
                 self.navigationController?.navigationBar.lt_setBackgroundColor(UIColor.clearColor().colorWithAlphaComponent(0))

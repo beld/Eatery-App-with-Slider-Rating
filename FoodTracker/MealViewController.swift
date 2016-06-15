@@ -1,11 +1,11 @@
 import UIKit
 import AMTagListView
 import SCLAlertView
+import M13Checkbox
 
 class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: Properties
     
-    @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -14,7 +14,6 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBOutlet weak var fatSlider: UISlider!
     @IBOutlet weak var carbSlider: UISlider!
     @IBOutlet weak var calorySlider: UISlider!
-    @IBOutlet weak var energyDensitySlider: UISlider!
     @IBOutlet weak var difficultySlider: UISlider!
     @IBOutlet weak var timeSlider: UISlider!
     @IBOutlet weak var sugarSlider: UISlider!
@@ -32,10 +31,20 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBOutlet weak var vitaminLabel: UILabel!
     @IBOutlet weak var fibreLabel: UILabel!
     @IBOutlet weak var tasteButton: UIButton!
+    @IBOutlet weak var lessCheckBox: M13Checkbox!
+    @IBOutlet weak var moreCheckBox: M13Checkbox!
     
     var meal: Meal?
+    var cookingDescription: String = ""
+    var energyDensity: Bool = false
+    let appearance = SCLAlertView.SCLAppearance(
+        kTitleFont: UIFont(name: "HelveticaNeue", size: 22)!,
+        kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
+        kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
+        kWindowWidth: CGFloat(300),
+        showCloseButton: true
+    )
     @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBOutlet weak var tagListView: AMTagListView!
     @IBAction func addTag(sender: AnyObject) {
         let tag = ["gesund"]
@@ -68,9 +77,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBAction func caloryValuedChanged(sender: AnyObject) {
         caloryLabel.text = String(format: "%.0f Kalorien", calorySlider.value)
     }
-    @IBAction func energyDensityValueChanged(sender: AnyObject) {
-        energyDensityLabel.text = String(format: "%.0f kcal/gram", energyDensitySlider.value)
-    }
+
     @IBAction func difficultyValueChanged(sender: AnyObject) {
         difficultyLabel.text = String(format: "%.0f/100", difficultySlider.value)
     }
@@ -90,59 +97,77 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         fibreLabel.text = String(format: "%.0f/100", fibreSlider.value)
     }
     
+    @IBAction func showRecipe(sender: AnyObject) {
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo(nameTextField.text!, subTitle: cookingDescription, closeButtonTitle: "Bestätigen")
+    }
+    
     @IBAction func tasteButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Geschmack", subTitle: "Bitte den Geschmack diese Gericht nach Ihren Gunsten bewerten, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Geschmack", subTitle: "Bitte den Geschmack diese Gericht nach Ihren Gunsten bewerten, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func healthButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Gesundheit", subTitle: "Wie gesund ist diese Gericht in Ihrer Meinung, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Gesundheit", subTitle: "Wie gesund ist diese Gericht in Ihrer Meinung, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func fatButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Fett", subTitle: "Bitte bewerten Sie das Fett dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Fett", subTitle: "Bitte bewerten Sie das Fett dieses Gericht Ihrer Meinung nach, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func carbButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Kohlenhydrate", subTitle: "Bitte bewerten Sie das Kohlenhydrat dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Kohlenhydrate", subTitle: "Bitte bewerten Sie das Kohlenhydrat dieses Gericht Ihrer Meinung nach, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func caloryButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Kalorien", subTitle: "Bitte bewerten Sie die Kalorien dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Kalorien", subTitle: "Bitte bewerten Sie die Kalorien dieses Gericht Ihrer Meinung nach, von 0 bis 1500 Kalorien", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func energyDensityButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Energiedichte", subTitle: "Bitte bewerten Sie die Energiedichte (Kilokalorien pro Gramm) dieses Gericht Ihrer Meinung nach")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Energiedichte", subTitle: "Bitte bewerten Sie die Energiedichte (Kilokalorien pro Gramm) dieses Gericht Ihrer Meinung nach", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func difficultyButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Schwierigkeit", subTitle: "Bitte bewerten Sie den Schwierigkeitsgrad dieses Mahl zu bereiten, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Schwierigkeit", subTitle: "Bitte bewerten Sie den Schwierigkeitsgrad dieses Mahl zu bereiten, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func timeButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Zeit", subTitle: "Bitte bewerten Sie die Zeit, die Sie brauchen diese Mahlzeit zu bereiten, von 0 bis 180 Mins")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Zeit", subTitle: "Bitte bewerten Sie die Zeit, die Sie brauchen diese Mahlzeit zu bereiten, von 0 bis 180 Mins", closeButtonTitle: "Bestätigen")
     }
     
     @IBAction func sugarButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Zucker", subTitle: "Bitte bewerten Sie den Zucker dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Zucker", subTitle: "Bitte bewerten Sie den Zucker dieses Gericht Ihrer Meinung nach, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     @IBAction func vitaminButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Vitamine", subTitle: "Bitte bewerten Sie die Vitamine dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Vitamine", subTitle: "Bitte bewerten Sie die Vitamine dieses Gericht Ihrer Meinung nach, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
     @IBAction func fibreButton(sender: AnyObject) {
-        let alert = SCLAlertView()
-        alert.showInfo("Ballaststoffe", subTitle: "Bitte bewerten Sie die Ballaststoffe dieses Gericht Ihrer Meinung nach, von 0 bis 100")
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showInfo("Ballaststoffe", subTitle: "Bitte bewerten Sie die Ballaststoffe dieses Gericht Ihrer Meinung nach, von 0 bis 100", closeButtonTitle: "Bestätigen")
     }
 
+    @IBAction func lessBoxClicked(sender: AnyObject) {
+        if moreCheckBox.checkState == .Checked {
+            moreCheckBox.setCheckState(.Unchecked, animated: true)
+        }
+        energyDensity = false
+    }
+    
+    @IBAction func moreBoxClicked(sender: AnyObject) {
+        if lessCheckBox.checkState == .Checked {
+            lessCheckBox.setCheckState(.Unchecked, animated: true)
+        }
+        energyDensity = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -183,10 +208,14 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
             calorySlider.thumbTintColor = tasteButton.tintColor
             caloryLabel.text = String(format: "%.0f Kalorien", calorySlider.value)
             
-            energyDensitySlider.value = existingMeal.energyDensityRating
-            energyDensitySlider.thumbTintColor = tasteButton.tintColor
-            energyDensityLabel.text = String(format: "%.0f kcal/gram", energyDensitySlider.value)
-            
+            if Int(existingMeal.energyDensityRating) == 0 {
+                lessCheckBox.setCheckState(.Checked, animated: true)
+                energyDensity = false
+            } else {
+                energyDensity = true
+                moreCheckBox.setCheckState(.Checked, animated: true)
+            }
+
             difficultySlider.value = existingMeal.difficultyRating
             difficultySlider.thumbTintColor = tasteButton.tintColor
             difficultyLabel.text = String(format: "%.0f/100", existingMeal.difficultyRating)
@@ -206,10 +235,9 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
             fibreSlider.value = existingMeal.fibreRating
             fibreSlider.thumbTintColor = tasteButton.tintColor
             fibreLabel.text =  String(format: "%.0f/100", fibreSlider.value)
-            descriptionTextView.text = existingMeal.cookingDescription
+            
+            cookingDescription = existingMeal.cookingDescription
         }
-        
-        descriptionTextView.sizeToFit()
         
         // enable save button only if text field has valid name
         checkValidMealName()
@@ -280,18 +308,20 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         if saveButton === sender {
             let name = nameTextField.text ?? ""
             let photo = photoImageView.image
-            let cookingDescription = descriptionTextView.text ?? ""
             let tasteRating = Float(tasteSlider.value)
             let healthRating = healthSlider.value
             let fatRating = fatSlider.value
             let carbRating = carbSlider.value
             let caloryRating = calorySlider.value
-            let energyDensityRating = energyDensitySlider.value
             let sugarRating = sugarSlider.value
             let vitaminRating = vitaminSlider.value
             let fibreRating = fibreSlider.value
             let difficultyRating = difficultySlider.value
             let timeRating = timeSlider.value
+            var energyDensityRating = Float(0)
+            if energyDensity {
+                energyDensityRating = Float(1)
+            }
             
             // set meal to be passed to MealTableViewController after unwind segue
             meal = Meal(name: name, photo: photo, tasteRating:tasteRating, healthRating: healthRating, fatRating: fatRating, carbRating: carbRating, caloryRating: caloryRating, energyDensityRating: energyDensityRating, sugarRating: sugarRating, vitaminRating: vitaminRating, fibreRating: fibreRating, difficultyRating: difficultyRating, timeRating: timeRating, cookingDescription: cookingDescription, elapsedRatingTime: 0)
